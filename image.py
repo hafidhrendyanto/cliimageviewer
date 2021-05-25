@@ -35,7 +35,7 @@ class Image:
         charrep = '.,-~:;=!*#$@'
         str = ''
         tempimg = PILImage.fromarray(np.uint8(self.data*255))
-        tempimg.thumbnail((400, 190))
+        tempimg.thumbnail((300, 170))
         tempdata = np.array(tempimg) / 255
         for rows in tempdata:
             for column in rows:
@@ -43,7 +43,7 @@ class Image:
                     grayval = column
                 else:
                     grayval = 0.299*column[0] + 0.587*column[1] + 0.144*column[2]
-                str += charrep[round(grayval*11)] + charrep[round(grayval*11)] 
+                str += charrep[round(grayval*11)] + charrep[round(grayval*11)] + charrep[round(grayval*11)] 
             str += '\n'
 
         return str
