@@ -2,27 +2,51 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import pathlib
-import png
+
+from PIL import Image as PILImage
+
+from subprocess import call
 
 class Image:
     def __init__(self, filename) -> None:
         self.path = pathlib.Path.cwd().joinpath(filename)
         self.name = self.path.name
         self.extension = self.path.suffix
-        self.data = []
         self.data = mpimg.imread(self.path)
-        print(self.data.shape)
-        plt.imshow(self.data)
-        plt.show()
+        
+        if (len(self.data.shape) == 3):
+            self.height, self.width, self.depth = self.data.shape 
+        else:
+            self.height, self.width = self.data.shape
+            self.depth = 1
 
-        # assert self.extension == r'.png', "File type must be PNG"
-        # with self.path.open(mode = 'rb') as file:
-        #     self.width, self.height, self.data, _ = png.Reader(file=file).asRGB8()
-        #     self.data = np.array([x for x in self.data]).reshape((self.height, self.width, 3))
-        #     print(self.width)
-        #     print(self.height)
-        #     print(self.data.shape)
-        #     print(self.data)
+        # plt.imshow(self.data)
+        # plt.show()
+
+    def show(self):
+        for i in range(7):
+            call(["xdotool", "key", "ctrl+minus"])
+        print(self)
+        input()
+        call(["xdotool", "key", "ctrl+0"])
+
+
+    def __repr__(self):
+        charrep = '.,-~:;=!*#$@'
+        str = ''
+        tempimg = PILImage.fromarray(np.uint8(self.data*255))
+        tempimg.thumbnail((400, 190))
+        tempdata = np.array(tempimg) / 255
+        for rows in tempdata:
+            for column in rows:
+                if self.depth == 1:
+                    grayval = column
+                else:
+                    grayval = 0.299*column[0] + 0.587*column[1] + 0.144*column[2]
+                str += charrep[round(grayval*11)] + charrep[round(grayval*11)] 
+            str += '\n'
+
+        return str
 
             
         

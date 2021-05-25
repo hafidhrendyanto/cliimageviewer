@@ -4,5 +4,6 @@ from image import Image
 
 if __name__ == "__main__":
     img = Image(sys.argv[1])
-    print(img.name)
-    print(img.extension)
+    
+    img.show()
+    # print(img)
